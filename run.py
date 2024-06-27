@@ -15,7 +15,7 @@ DEBUG_MODE = False  # Debug模式，是否打印请求返回信息
 # PROXY = input('请输入代理，如不需要直接回车:')  # 代理，如果多次出现IP问题可尝试将自己所用的魔法设置为代理。例如：使用clash则设置为 'http://127.0.0.1:7890'
 PROXY = ''
 INVITE_CODE = os.getenv('INVITE_CODE') or input('请输入邀请码: ')
-webhook_url = os.getenv('WEBHOOK')
+WEBHOOK = os.getenv('WEBHOOK')
 
 # 检查变量
 def check_env():
@@ -640,22 +640,22 @@ async def main():
         run_time = f"{(end_time - start_time):.2f}"
         if activation['add_days'] == 5:
             print(f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒')
-            send_discord_message(webhook_url, f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒')
+            send_discord_message(WEBHOOK, f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒')
             print(f'邮箱: {mail}')
-            send_discord_message(webhook_url, f'邮箱: {mail}')
+            send_discord_message(WEBHOOK, f'邮箱: {mail}')
             print(f'密码: linyuan666')
-            end_discord_message(webhook_url, f'密码: linyuan666')
+            end_discord_message(WEBHOOK, f'密码: linyuan666')
             return
         else:
             print(f'邀请码: {incode} ==> 邀请失败, 用时: {run_time} 秒')
-            send_discord_message(webhook_url, f'邀请码: {incode} ==> 邀请失败, 用时: {run_time} 秒')
+            send_discord_message(WEBHOOK, f'邀请码: {incode} ==> 邀请失败, 用时: {run_time} 秒')
         # input('按回车键再次邀请!!!')
         await main()
     except Exception as e:
         if '环境变量' in str(e):
             return
         print(f'异常捕获:{e}')
-        send_discord_message(webhook_url, f'异常捕获:{e}')
+        send_discord_message(WEBHOOK, f'异常捕获:{e}')
         print('请检查网络环境,(开启科学上网)重试!!!')
         # input('按回车键重试!!!')
         # await main()
