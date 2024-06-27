@@ -8,6 +8,7 @@ import aiohttp
 import uuid
 import image
 import recognize
+import requests
 from rich import print_json
 
 DEBUG_MODE = False  # Debug模式，是否打印请求返回信息
