@@ -643,11 +643,11 @@ async def main():
         run_time = f"{(end_time - start_time):.2f}"
         if activation['add_days'] == 5:
             print(f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒')
-            send_discord_message(WEBHOOK_URL, f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒')
+            #send_discord_message(WEBHOOK_URL, f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒')
             print(f'邮箱: {mail}')
-            send_discord_message(WEBHOOK_URL, f'邮箱: {mail}')
+            #send_discord_message(WEBHOOK_URL, f'邮箱: {mail}')
             print(f'密码: linyuan666')
-            end_discord_message(WEBHOOK_URL, f'密码: linyuan666')
+            send_discord_message(WEBHOOK_URL, f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒\n邮箱: {mail}\n密码: linyuan666')
             return
         else:
             print(f'邀请码: {incode} ==> 邀请失败, 用时: {run_time} 秒')
