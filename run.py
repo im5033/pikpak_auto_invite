@@ -15,13 +15,16 @@ DEBUG_MODE = False  # Debug模式，是否打印请求返回信息
 # PROXY = input('请输入代理，如不需要直接回车:')  # 代理，如果多次出现IP问题可尝试将自己所用的魔法设置为代理。例如：使用clash则设置为 'http://127.0.0.1:7890'
 PROXY = ''
 INVITE_CODE = os.getenv('INVITE_CODE') or input('请输入邀请码: ')
-WEBHOOK = os.getenv('WEBHOOK')
+WEBHOOK = os.getenv('WEBHOOK')# or input('请输入WEBHOOK: ')
 
 # 检查变量
 def check_env():
     if not INVITE_CODE:
         print('请按照文档设置INVITE_CODE环境变量')
         raise Exception('请按照文档设置INVITE_CODE环境变量')
+    if not WEBHOOK:
+        print('请按照文档设置WEBHOOK环境变量')
+        raise Exception('请按照文档设置WEBHOOK环境变量')
 
 def send_discord_message(webhook_url, message):
     headers = {
