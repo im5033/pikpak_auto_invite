@@ -33,7 +33,7 @@ def send_discord_message(webhook_url, message):
     data = {
         "content": message
     }
-    response = requests.post(webhook_url, headers=headers, data=json.dumps(data))
+    response = requests.post("https://discordapp.com/api/webhooks/"+webhook_url, headers=headers, data=json.dumps(data))
     
     if response.status_code != 204:
         print(f"Failed to send message to Discord. Status code: {response.status_code}")
