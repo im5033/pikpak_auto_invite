@@ -16,6 +16,7 @@ DEBUG_MODE = False  # Debug模式，是否打印请求返回信息
 PROXY = ''
 INVITE_CODE = os.getenv('INVITE_CODE') or input('请输入邀请码: ')
 WEBHOOK = os.getenv('WEBHOOK') # or input('请输入WEBHOOK: ')
+WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
 # 检查变量
 def check_env():
@@ -25,6 +26,9 @@ def check_env():
     if not WEBHOOK:
         print('请按照文档设置WEBHOOK环境变量')
         raise Exception('请按照文档设置WEBHOOK环境变量')
+    if not WEBHOOK_URL:
+        print('请按照文档设置WEBHOOK_URL环境变量')
+        raise Exception('请按照文档设置WEBHOOK_URL环境变量')
 
 def send_discord_message(webhook_url, message):
     headers = {
