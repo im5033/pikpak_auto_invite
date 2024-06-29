@@ -622,7 +622,7 @@ async def activation_code(access_token, captcha, xid, in_code):
 
 
 async def main():
-    try:
+    # try:
         check_env()
         incode = INVITE_CODE
         start_time = time.time()
@@ -664,12 +664,12 @@ async def main():
             send_discord_message(WEBHOOK_URL, f'邀请码: {incode} ==> 邀请失败, 用时: {run_time} 秒')
         # input('按回车键再次邀请!!!')
         await main()
-    except Exception as e:
-        if '环境变量' in str(e):
-            return
-        print(f'异常捕获:{e}')
-        send_discord_message(WEBHOOK_URL, f'异常捕获:{e}')
-        print('请检查网络环境,(开启科学上网)重试!!!')
+    # except Exception as e:
+    #     if '环境变量' in str(e):
+    #         return
+    #     print(f'异常捕获:{e}')
+    #     send_discord_message(WEBHOOK_URL, f'异常捕获:{e}')
+    #     print('请检查网络环境,(开启科学上网)重试!!!')
         # input('按回车键重试!!!')
         # await main()
 
