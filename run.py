@@ -140,30 +140,30 @@ async def get_code(mail, max_retries=10, delay=1):
     retries = 0
     while retries < max_retries:
         accout = 'pikpak0903@gmail.com' # 你的信箱帳號
-            destination = mail # 目標收件人
-            password = 'yhwvkiqwfphtrcvb' # Google 提供的應用程式專用密碼
+        destination = mail # 目標收件人
+        password = 'yhwvkiqwfphtrcvb' # Google 提供的應用程式專用密碼
 
-            conn = imaplib.IMAP4_SSL('imap.gmail.com') # 建立 SSL 連接
-            conn.login(accout, password) # 登入郵件信箱
+        conn = imaplib.IMAP4_SSL('imap.gmail.com') # 建立 SSL 連接
+        conn.login(accout, password) # 登入郵件信箱
 
-            conn.select('INBOX') # 選擇收件匣
-            result, data = conn.search(None, f'(TO "{destination}")') # 根據收件者篩選郵件
+        conn.select('INBOX') # 選擇收件匣
+        result, data = conn.search(None, f'(TO "{destination}")') # 根據收件者篩選郵件
 
-            mail_id_list = data[0].split()
-            mail_id_list.reverse() # 反轉郵件列表，取得最新郵件
-            for i in mail_id_list:
-              result, data = conn.fetch(i, '(RFC822)')
-              if result == 'OK': # 檢查是否有郵件
-                e = em.message_from_bytes(data[0][1]) # 解析郵件
-                mail_content = e.get_payload()
-                match = re.search(r'\b\d{6}\b', mail_content)
-                if match:
-                  code = match.group()
-                  print("驗證碼: ", code) # 列印擷取的驗證碼
-                  return code
-              else:
-                time.sleep(delay)
-                retries += 1
+        mail_id_list = data[0].split()
+        mail_id_list.reverse() # 反轉郵件列表，取得最新郵件
+        for i in mail_id_list:
+          result, data = conn.fetch(i, '(RFC822)')
+          if result == 'OK': # 檢查是否有郵件
+            e = em.message_from_bytes(data[0][1]) # 解析郵件
+            mail_content = e.get_payload()
+            match = re.search(r'\b\d{6}\b', mail_content)
+            if match:
+              code = match.group()
+              print("驗證碼: ", code) # 列印擷取的驗證碼
+              return code
+          else:
+            time.sleep(delay)
+            retries += 1
     print("获取邮箱邮件内容失败，未收到邮件...")
     return None
 
