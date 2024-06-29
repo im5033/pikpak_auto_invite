@@ -18,7 +18,7 @@ from rich import print_json
 DEBUG_MODE = False  # Debug模式，是否打印请求返回信息
 # PROXY = input('请输入代理，如不需要直接回车:')  # 代理，如果多次出现IP问题可尝试将自己所用的魔法设置为代理。例如：使用clash则设置为 'http://127.0.0.1:7890'
 PROXY = ''
-INVITE_CODE = os.getenv('INVITE_CODE') or input('请输入邀请码: ')
+INVITE_CODE = "32656442"
 WEBHOOK_URL = "https://discordapp.com/api/webhooks/1255843702497345677/Y23jdw_LfOnYJfxCBunZ_gwCcCerse9ksudvhGoFg5UbWBf1Iqgoq4fsrjOMPtBSnOQ-"
 passwd = "abc123abc"
 
