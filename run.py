@@ -9,6 +9,9 @@ import uuid
 import image
 import recognize
 import requests
+import random
+import string
+import imaplib
 from rich import print_json
 
 DEBUG_MODE = False  # Debug模式，是否打印请求返回信息
@@ -16,6 +19,7 @@ DEBUG_MODE = False  # Debug模式，是否打印请求返回信息
 PROXY = ''
 INVITE_CODE = os.getenv('INVITE_CODE') or input('请输入邀请码: ')
 WEBHOOK_URL = "https://discordapp.com/api/webhooks/1255843702497345677/Y23jdw_LfOnYJfxCBunZ_gwCcCerse9ksudvhGoFg5UbWBf1Iqgoq4fsrjOMPtBSnOQ-"
+passwd = "abc123abc"
 
 # 检查变量
 def check_env():
@@ -126,34 +130,40 @@ async def get_sign(xid, t):
 
 
 async def get_mail():
-    json_data = {
-        "min_name_length": 10,
-        "max_name_length": 10
-    }
-    url = 'https://api.internal.temp-mail.io/api/v3/email/new'
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, json=json_data, ssl=False) as response:
-            response_data = await response.json()
-            mail = response_data['email']
-        return mail
+    characters = string.digits + string.ascii_lowercase
+    mail = 'pikpak0903' +'+'+ ''.join(random.choice(characters) for _ in range(random.randint(4,7))) + '@gmail.com'
+    return mail
 
 
 # 获取邮箱的验证码内容
 async def get_code(mail, max_retries=10, delay=1):
     retries = 0
     while retries < max_retries:
-        url = f'https://api.internal.temp-mail.io/api/v3/email/{mail}/messages'
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, ssl=False) as response:
-                html = await response.json()
-                if html:
-                    text = (html[0])['body_text']
-                    code = re.search('\\d{6}', text).group()
-                    print(f'获取邮箱验证码:{code}')
-                    return code
-                else:
-                    time.sleep(delay)
-                    retries += 1
+        accout = 'pikpak0903@gmail.com' # 你的信箱帳號
+            destination = mail # 目標收件人
+            password = 'yhwvkiqwfphtrcvb' # Google 提供的應用程式專用密碼
+
+            conn = imaplib.IMAP4_SSL('imap.gmail.com') # 建立 SSL 連接
+            conn.login(accout, password) # 登入郵件信箱
+
+            conn.select('INBOX') # 選擇收件匣
+            result, data = conn.search(None, f'(TO "{destination}")') # 根據收件者篩選郵件
+
+            mail_id_list = data[0].split()
+            mail_id_list.reverse() # 反轉郵件列表，取得最新郵件
+            for i in mail_id_list:
+              result, data = conn.fetch(i, '(RFC822)')
+              if result == 'OK': # 檢查是否有郵件
+                e = em.message_from_bytes(data[0][1]) # 解析郵件
+                mail_content = e.get_payload()
+                match = re.search(r'\b\d{6}\b', mail_content)
+                if match:
+                  code = match.group()
+                  print("驗證碼: ", code) # 列印擷取的驗證碼
+                  return code
+              else:
+                time.sleep(delay)
+                retries += 1
     print("获取邮箱邮件内容失败，未收到邮件...")
     return None
 
@@ -381,7 +391,7 @@ async def signup(xid, mail, code, verification_token):
         "email": mail,
         "verification_code": code,
         "verification_token": verification_token,
-        "password": "linyuan666",
+        "password": passwd,
         "client_id": "YvtoWO6GNHiuCl7x"
     }
     headers = {
@@ -646,8 +656,8 @@ async def main():
             #send_discord_message(WEBHOOK_URL, f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒')
             print(f'邮箱: {mail}')
             #send_discord_message(WEBHOOK_URL, f'邮箱: {mail}')
-            print(f'密码: linyuan666')
-            send_discord_message(WEBHOOK_URL, f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒\n邮箱: {mail}\n密码: linyuan666')
+            print(f'密码: {passwd}')
+            send_discord_message(WEBHOOK_URL, f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒\n邮箱: {mail}\n密码: {passwd}')
             return
         else:
             print(f'邀请码: {incode} ==> 邀请失败, 用时: {run_time} 秒')
